@@ -11,7 +11,7 @@ const Month: React.FC<MonthProps> = ({ month }) => {
   return (
     <>
       <Flex width={'full'}>
-        <Grid templateColumns="repeat(7, 1fr)" gap={1}>
+        <Grid templateColumns="repeat(7, 1fr)" gap={1} width={'full'}>
           {month.map((row, i) => (
             <React.Fragment key={i}>
               {row.map((day, index) => (
