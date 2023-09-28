@@ -3,6 +3,7 @@ import { Button, Flex, Text, Icon, Tooltip } from "@chakra-ui/react";
 
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import GlobalContext from "../context/GlobalContext";
+import dayjs from "dayjs";
 
 const CalenderHeader: React.FC = () => {
   const { monthIndex, setMonthIndex } = useContext(GlobalContext);
@@ -45,6 +46,9 @@ const CalenderHeader: React.FC = () => {
           <Icon as={AiOutlineRight} />
         </Button>
       </Tooltip>
+      <Text color={'gray.600'} fontWeight={'semibold'} fontSize={'md'} ml={'10px'}>
+        {dayjs(new Date(dayjs().year(), monthIndex)).format("YYYY MMMM")}
+      </Text>
     </Flex>
   );
 };
