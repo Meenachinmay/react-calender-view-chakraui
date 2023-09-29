@@ -1,5 +1,3 @@
-// components/Modal.tsx
-
 import React from "react";
 import { Flex, Box } from "@chakra-ui/react";
 import "../../App.css"; // import our custom css for the blur effect
@@ -7,7 +5,7 @@ import "../../App.css"; // import our custom css for the blur effect
 interface ModelProps {
   isOpen: boolean;
   onClose: () => void;
-  children: React.ReactNode,
+  children: React.ReactNode;
 }
 
 const Model: React.FC<ModelProps> = ({ isOpen, onClose, children }) => {
@@ -22,18 +20,22 @@ const Model: React.FC<ModelProps> = ({ isOpen, onClose, children }) => {
       left="0"
       justifyContent="center"
       alignItems="center"
-      className="model-overlay"
+      className={`model-overlay`}
       onClick={onClose}
     >
-      <Box
+      <Flex
+        justifyContent={"center"}
         bg="white"
+        width={"600px"}
+        height={"400px"}
         p={5}
         borderRadius="md"
         boxShadow="xl"
         onClick={(e) => e.stopPropagation()} // to prevent modal close when clicking inside
+        opacity={1}
       >
         {children}
-      </Box>
+      </Flex>
     </Flex>
   );
 };

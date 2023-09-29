@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { IDay } from "../types/day.type";
 
 import "../App.css";
 import GlobalContext from "../context/GlobalContext";
-import EventDetailModal from "./ui-models/EventDetailModal";
-import Model from "./ui-models/EventDetailModal";
+import Model from "./ui-models/EventModel";
 
 const Day: React.FC<IDay> = ({ day, events }: IDay) => {
   const [dayColor, setDayColor] = useState<string>("gray.100");
   const { eventModel, setEventModel } = useContext(GlobalContext);
+  const [isModelOpen, setIsModelOpen] = useState<boolean>(false);
 
   function getCurrentDayClass() {
     return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY");
@@ -65,9 +65,7 @@ const Day: React.FC<IDay> = ({ day, events }: IDay) => {
           borderBottomColor: "orange.500",
         }}
         cursor={"pointer"}
-        transition={"ease-in-out"}
-        overflowX={"scroll"}
-        onClick={() => setEventModel(true)}
+        onClick={() => setIsModelOpen(true)}
       >
         <Flex
           flexDir={"column"}
@@ -84,9 +82,19 @@ const Day: React.FC<IDay> = ({ day, events }: IDay) => {
           ))}
         </Flex>
       </Flex>
-      <Model isOpen={eventModel} onClose={() => setEventModel(false)}>
-        <h1>Your Content Here</h1>
-        <p>This is a reusable modal component.</p>
+      <Model isOpen={isModelOpen} onClose={() => setIsModelOpen(false)}>
+        <Flex flexDir={"column"} width={"full"} height={"full"}>
+          <h1>Your Content Here</h1>
+          <p>{day.format("DD")}</p>
+          <Flex width={"full"} maxWidth={"full"} gap={1} wrap={"wrap"}>
+            {events?.map((e) => (
+              <div className="events_dots" key={e.id}></div>
+            ))}
+          </Flex>
+          <Button bg={"orange.400"} color={"white"} fontWeight={"bold"}>
+            Save event
+          </Button>
+        </Flex>
       </Model>
     </>
   );
