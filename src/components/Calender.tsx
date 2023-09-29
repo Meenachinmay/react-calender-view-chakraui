@@ -1,19 +1,28 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Flex, Text } from "@chakra-ui/react";
 
-import { getMonth } from "../utils";
+import { getMonth, processEventsIntoDateStructure } from "../utils";
 import CalenderHeader from "./CalenderHeader";
 import Month from "./Month";
 import GlobalContext from "../context/GlobalContext";
 
+import { events } from "../data-array/event.index";
+import { IEvent } from "../types/event.type";
+
 const Calender: React.FC = () => {
   const [currentMonth, setCurrentMonth] = useState(getMonth());
+  const [eventsByDate, setEventsByDate] = useState<{
+    [date: string]: IEvent[];
+  }>({});
   const { monthIndex } = useContext(GlobalContext);
 
   // set month and fetch events
   useEffect(() => {
-   setCurrentMonth(getMonth(monthIndex)); 
-  }, [monthIndex])
+    setCurrentMonth(getMonth(monthIndex));
+    const processedEvents = processEventsIntoDateStructure(events);
+    setEventsByDate(processedEvents);
+  }, [monthIndex]);
+ 
 
   return (
     <>
@@ -26,7 +35,7 @@ const Calender: React.FC = () => {
       >
         <CalenderHeader />
         <Flex width={"100%"} gap={"5"}>
-          <Month month={currentMonth} />
+          <Month month={currentMonth} eventsByDate={eventsByDate} />
         </Flex>
       </Flex>
     </>

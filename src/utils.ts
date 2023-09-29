@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { IEvent } from "./types/event.type";
 
 export function getMonth(month = dayjs().month()) {
   const year = dayjs().year()
@@ -16,3 +17,16 @@ export function getMonth(month = dayjs().month()) {
 
   return daysMatrix;
 }
+
+export const processEventsIntoDateStructure = (events: IEvent[]) => {
+    const eventsByDate: { [date: string]: IEvent[] } = {};
+
+    events.forEach((event) => {
+      if (!eventsByDate[event.date]) {
+        eventsByDate[event.date] = [];
+      }
+      eventsByDate[event.date].push(event);
+    });
+
+    return eventsByDate;
+  };

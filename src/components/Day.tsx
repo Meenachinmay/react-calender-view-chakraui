@@ -3,25 +3,25 @@ import { Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { IDay } from "../types/day.type";
 import { IEvent } from "../types/event.type";
-import { events } from "../data-array/event.index";
+// import { events } from "../data-array/event.index";
 
-const Day: React.FC<IDay> = ({ day }: IDay) => {
-  const [eventsToRender, setEventsToRender] = useState<IEvent[] | null>(null);
+const Day: React.FC<IDay> = ({ day, events }: IDay) => {
+//   const [eventsToRender, setEventsToRender] = useState<IEvent[] | null>(null);
 
   function getCurrentDayClass() {
     return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY");
   }
 
-  useEffect(() => {
-    const data: IEvent[] = events.filter((e) => {
-      return e.date === day.format("DD-MM-YYYY");
-    });
-    if (data) {
-      setEventsToRender(data);
-    }
-    console.log(eventsToRender);
-    console.log('render')
-  }, [day]);
+//   useEffect(() => {
+//     const data: IEvent[] = events.filter((e) => {
+//       return e.date === day.format("DD-MM-YYYY");
+//     });
+//     if (data) {
+//       setEventsToRender(data);
+//     }
+//     console.log(eventsToRender);
+//     console.log('render')
+//   }, [day]);
 
   return (
     <Flex
@@ -53,7 +53,7 @@ const Day: React.FC<IDay> = ({ day }: IDay) => {
         <Text fontSize={"sm"}>{day.format("DD")}</Text>
       </Flex>
       <Flex width={'full'} gap={1}>
-        {eventsToRender?.map((e) => (
+        {events?.map((e) => (
           <p key={e.id} style={{ fontSize: "10px" }}>{e.title}</p>
         ))}
       </Flex>

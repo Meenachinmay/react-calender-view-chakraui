@@ -2,12 +2,14 @@ import { Box, Center, Flex, Grid, GridItem } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import React from "react";
 import Day from "./Day";
+import { IEvent } from "../types/event.type";
 
 interface MonthProps {
-  month: dayjs.Dayjs[][],
+  month: dayjs.Dayjs[][];
+  eventsByDate: { [date: string]: IEvent[] };
 }
 
-const Month: React.FC<MonthProps> = ({ month }) => {
+const Month: React.FC<MonthProps> = ({ month, eventsByDate }) => {
    
   return (
     <>
@@ -16,7 +18,7 @@ const Month: React.FC<MonthProps> = ({ month }) => {
           {month.map((row, i) => (
             <React.Fragment key={i}>
               {row.map((day, index) => (
-                <Day day={day} key={index} />
+                <Day day={day} key={index} events={eventsByDate[day.format("DD-MM-YYYY")]} />
               ))}
             </React.Fragment>
           ))}
