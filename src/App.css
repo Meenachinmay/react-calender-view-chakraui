@@ -1,1 +1,18 @@
+.events_dots {
+  width: 10px;
+  height: 10px;
+  background-color: #C05621;
+  border-radius: 50%;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.day_card {
+    background-color: rgb(211, 214, 214);
+}
+
+.day_card_with_events {
+    background-color: lightsalmon;
+}
+
 

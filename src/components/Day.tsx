@@ -2,32 +2,50 @@ import React, { useEffect, useState } from "react";
 import { Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { IDay } from "../types/day.type";
-import { IEvent } from "../types/event.type";
-// import { events } from "../data-array/event.index";
+
+import "../App.css";
 
 const Day: React.FC<IDay> = ({ day, events }: IDay) => {
-//   const [eventsToRender, setEventsToRender] = useState<IEvent[] | null>(null);
+  const [dayColor, setDayColor] = useState<string>("gray.100");
 
   function getCurrentDayClass() {
     return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY");
   }
 
-//   useEffect(() => {
-//     const data: IEvent[] = events.filter((e) => {
-//       return e.date === day.format("DD-MM-YYYY");
-//     });
-//     if (data) {
-//       setEventsToRender(data);
-//     }
-//     console.log(eventsToRender);
-//     console.log('render')
-//   }, [day]);
+  useEffect(() => {
+    // If the day has events and it's also today's date
+    if (
+      events?.length &&
+      day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
+    ) {
+      setDayColor("orange.300");
+      return; // early exit from the useEffect
+    }
+
+    // If the day has events
+    if (events?.length) {
+      setDayColor("orange.100");
+      return; // early exit from the useEffect
+    }
+
+    // If it's today's date
+    if (day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")) {
+      setDayColor("orange.300");
+      return; // early exit from the useEffect
+    }
+
+    // Fall back to original color
+    // You can also handle any other default or fallback colors if required.
+    setDayColor("gray.100");
+  }, [day, events]);
 
   return (
     <Flex
       width={"full"}
       height={"100px"}
-      bg={getCurrentDayClass() ? "orange.300" : "gray.100"}
+      className="day_card"
+      //   bg={getCurrentDayClass() ? "orange.300" : 'gray.100'}
+      bg={dayColor}
       border={"1px solid"}
       borderColor={"gray.100"}
       borderRadius={"5px"}
@@ -35,13 +53,15 @@ const Day: React.FC<IDay> = ({ day, events }: IDay) => {
       p={1}
       my={1}
       _hover={{
-        bg: getCurrentDayClass() ? "orange.300" : "gray.200",
+        // bg: getCurrentDayClass() ? "orange.300" : "gray.100",
+        bg: dayColor,
         boxShadow: "xl",
         borderBottom: "2px solid",
         borderBottomColor: "orange.500",
       }}
       cursor={"pointer"}
       transition={"ease-in-out"}
+      overflowX={"scroll"}
     >
       <Flex
         flexDir={"column"}
@@ -52,9 +72,9 @@ const Day: React.FC<IDay> = ({ day, events }: IDay) => {
         <Text fontSize={"sm"}>{day.format("ddd").toUpperCase()}</Text>
         <Text fontSize={"sm"}>{day.format("DD")}</Text>
       </Flex>
-      <Flex width={'full'} gap={1}>
+      <Flex width={"full"} maxWidth={"full"} gap={1} wrap={"wrap"}>
         {events?.map((e) => (
-          <p key={e.id} style={{ fontSize: "10px" }}>{e.title}</p>
+          <div className="events_dots" key={e.id}></div>
         ))}
       </Flex>
     </Flex>
