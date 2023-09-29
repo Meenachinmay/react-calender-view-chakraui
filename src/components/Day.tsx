@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { IDay } from "../types/day.type";
 
 import "../App.css";
+import GlobalContext from "../context/GlobalContext";
+import EventDetailModal from "./ui-models/EventDetailModal";
+import Model from "./ui-models/EventDetailModal";
 
 const Day: React.FC<IDay> = ({ day, events }: IDay) => {
   const [dayColor, setDayColor] = useState<string>("gray.100");
+  const { eventModel, setEventModel } = useContext(GlobalContext);
 
   function getCurrentDayClass() {
     return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY");
@@ -40,44 +44,51 @@ const Day: React.FC<IDay> = ({ day, events }: IDay) => {
   }, [day, events]);
 
   return (
-    <Flex
-      width={"full"}
-      height={"100px"}
-      className="day_card"
-      //   bg={getCurrentDayClass() ? "orange.300" : 'gray.100'}
-      bg={dayColor}
-      border={"1px solid"}
-      borderColor={"gray.100"}
-      borderRadius={"5px"}
-      flexDir={"column"}
-      p={1}
-      my={1}
-      _hover={{
-        // bg: getCurrentDayClass() ? "orange.300" : "gray.100",
-        bg: dayColor,
-        boxShadow: "xl",
-        borderBottom: "2px solid",
-        borderBottomColor: "orange.500",
-      }}
-      cursor={"pointer"}
-      transition={"ease-in-out"}
-      overflowX={"scroll"}
-    >
+    <>
       <Flex
+        width={"full"}
+        height={"100px"}
+        className="day_card"
+        //   bg={getCurrentDayClass() ? "orange.300" : 'gray.100'}
+        bg={dayColor}
+        border={"1px solid"}
+        borderColor={"gray.100"}
+        borderRadius={"5px"}
         flexDir={"column"}
-        alignItems={"center"}
-        color={getCurrentDayClass() ? "white" : "gray.800"}
-        fontWeight={getCurrentDayClass() ? "bold" : "normal"}
+        p={1}
+        my={1}
+        _hover={{
+          // bg: getCurrentDayClass() ? "orange.300" : "gray.100",
+          bg: dayColor,
+          boxShadow: "xl",
+          borderBottom: "2px solid",
+          borderBottomColor: "orange.500",
+        }}
+        cursor={"pointer"}
+        transition={"ease-in-out"}
+        overflowX={"scroll"}
+        onClick={() => setEventModel(true)}
       >
-        <Text fontSize={"sm"}>{day.format("ddd").toUpperCase()}</Text>
-        <Text fontSize={"sm"}>{day.format("DD")}</Text>
+        <Flex
+          flexDir={"column"}
+          alignItems={"center"}
+          color={getCurrentDayClass() ? "white" : "gray.800"}
+          fontWeight={getCurrentDayClass() ? "bold" : "normal"}
+        >
+          <Text fontSize={"sm"}>{day.format("ddd").toUpperCase()}</Text>
+          <Text fontSize={"sm"}>{day.format("DD")}</Text>
+        </Flex>
+        <Flex width={"full"} maxWidth={"full"} gap={1} wrap={"wrap"}>
+          {events?.map((e) => (
+            <div className="events_dots" key={e.id}></div>
+          ))}
+        </Flex>
       </Flex>
-      <Flex width={"full"} maxWidth={"full"} gap={1} wrap={"wrap"}>
-        {events?.map((e) => (
-          <div className="events_dots" key={e.id}></div>
-        ))}
-      </Flex>
-    </Flex>
+      <Model isOpen={eventModel} onClose={() => setEventModel(false)}>
+        <h1>Your Content Here</h1>
+        <p>This is a reusable modal component.</p>
+      </Model>
+    </>
   );
 };
 

@@ -7,12 +7,10 @@
   margin-bottom: 5px;
 }
 
-.day_card {
-    background-color: rgb(211, 214, 214);
+/* styles/Modal.css */
+
+.model-overlay {
+    background-color: rgba(227, 225, 225, 0.4); /* Dimmed black overlay */
+    backdrop-filter: blur(1px); /* Blur effect */
+    opacity: 0.1;
 }
-
-.day_card_with_events {
-    background-color: lightsalmon;
-}
-
-

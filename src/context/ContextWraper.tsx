@@ -8,8 +8,9 @@ interface ContextWrapperProps {
 
 export default function ContextWrapper(props: ContextWrapperProps) {
     const [monthIndex, setMonthIndex] = useState<number>(dayjs().month());
+    const [eventModel, setEventModel] = useState<boolean>(false);
     return (
-        <GlobalContext.Provider value={{ monthIndex, setMonthIndex}}>
+        <GlobalContext.Provider value={{ monthIndex, setMonthIndex, setEventModel, eventModel}}>
             { props.children}
         </GlobalContext.Provider>
     )
