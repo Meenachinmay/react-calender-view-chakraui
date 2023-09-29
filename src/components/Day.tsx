@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { IDay } from "../types/day.type";
+import { IEvent } from "../types/event.type";
+import { events } from "../data-array/event.index";
 
-interface DayProps {
-  day: dayjs.Dayjs;
-}
+const Day: React.FC<IDay> = ({ day }: IDay) => {
+  const [eventsToRender, setEventsToRender] = useState<IEvent[] | null>(null);
 
-const Day: React.FC<DayProps> = ({ day }) => {
   function getCurrentDayClass() {
     return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY");
   }
+
+  useEffect(() => {
+    const data: IEvent[] = events.filter((e) => {
+      return e.date === day.format("DD-MM-YYYY");
+    });
+    if (data) {
+      setEventsToRender(data);
+    }
+    console.log(eventsToRender);
+    console.log('render')
+  }, [day]);
+
   return (
     <Flex
       width={"full"}
@@ -34,10 +47,15 @@ const Day: React.FC<DayProps> = ({ day }) => {
         flexDir={"column"}
         alignItems={"center"}
         color={getCurrentDayClass() ? "white" : "gray.800"}
-        fontWeight={getCurrentDayClass() ? 'bold' : 'normal'}
+        fontWeight={getCurrentDayClass() ? "bold" : "normal"}
       >
         <Text fontSize={"sm"}>{day.format("ddd").toUpperCase()}</Text>
         <Text fontSize={"sm"}>{day.format("DD")}</Text>
+      </Flex>
+      <Flex width={'full'} gap={1}>
+        {eventsToRender?.map((e) => (
+          <p key={e.id} style={{ fontSize: "10px" }}>{e.title}</p>
+        ))}
       </Flex>
     </Flex>
   );

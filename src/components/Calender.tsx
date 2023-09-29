@@ -10,6 +10,7 @@ const Calender: React.FC = () => {
   const [currentMonth, setCurrentMonth] = useState(getMonth());
   const { monthIndex } = useContext(GlobalContext);
 
+  // set month and fetch events
   useEffect(() => {
    setCurrentMonth(getMonth(monthIndex)); 
   }, [monthIndex])

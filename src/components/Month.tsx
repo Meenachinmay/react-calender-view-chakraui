@@ -4,10 +4,11 @@ import React from "react";
 import Day from "./Day";
 
 interface MonthProps {
-  month: dayjs.Dayjs[][];
+  month: dayjs.Dayjs[][],
 }
 
 const Month: React.FC<MonthProps> = ({ month }) => {
+   
   return (
     <>
       <Flex width={'full'}>
