@@ -91,9 +91,38 @@ const Day: React.FC<IDay> = ({ day, events }: IDay) => {
               <div className="events_dots" key={e.id}></div>
             ))}
           </Flex>
-          <Button bg={"orange.400"} color={"white"} fontWeight={"bold"}>
-            Save event
-          </Button>
+          <Flex alignItems={"center"} gap={5} padding={"10px"}>
+            <Button
+              bg={"orange.400"}
+              width={"full"}
+              color={"white"}
+              fontWeight={"bold"}
+              _hover={{ bg: "orange.500", boxShadow: 'lg'}}
+              borderRadius={'0px'}
+            >
+              Button A
+            </Button>
+            <Button
+              bg={"orange.400"}
+              width={"full"}
+              color={"white"}
+              fontWeight={"bold"}
+              _hover={{ bg: "orange.500", boxShadow: 'lg'}}
+              borderRadius={'0px'}
+            >
+              Button B
+            </Button>
+            <Button
+              bg={"orange.400"}
+              width={"full"}
+              color={"white"}
+              fontWeight={"bold"}
+              _hover={{ bg: "orange.500", boxShadow: 'lg'}}
+              borderRadius={'0px'}
+            >
+              Button C
+            </Button>
+          </Flex>
         </Flex>
       </Model>
     </>
