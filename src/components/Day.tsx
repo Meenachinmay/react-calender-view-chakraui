@@ -9,6 +9,23 @@ import Model from "./ui-models/EventModel";
 import { AiFillSave } from "react-icons/ai";
 import { FcLike, FcViewDetails } from "react-icons/fc";
 
+import { motion } from "framer-motion";
+
+// define the animation variants
+const fadeInUpwards = {
+  hidden: {
+    y: 20,
+    opacity: 0,
+  },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 1, // This will make the animation take 1 second.
+    },
+  },
+};
+
 import "../App.css";
 
 const Day: React.FC<IDay> = ({ day, events }: IDay) => {
@@ -109,38 +126,53 @@ const Day: React.FC<IDay> = ({ day, events }: IDay) => {
             flexGrow={1}
           >
             <div className="tooltip-wrapper">
-              <span className="target-element">
+              <motion.span
+                initial="hidden"
+                animate="visible"
+                variants={fadeInUpwards}
+                className="target-element"
+              >
                 <Icon
                   as={FcLike}
                   w={"40px"}
                   h={"40px"}
                   cursor={"pointer"}
                 ></Icon>
-              </span>
+              </motion.span>
               <div className="tooltip-content">Like event</div>
             </div>
             <div className="tooltip-wrapper">
-              <span className="target-element">
+              <motion.span
+                initial="hidden"
+                animate="visible"
+                variants={fadeInUpwards}
+                className="target-element"
+              >
                 <Icon
                   as={FcViewDetails}
                   w={"40px"}
                   h={"40px"}
                   cursor={"pointer"}
                 ></Icon>
-              </span>
-              <div className="tooltip-content">View details</div>
+              </motion.span>
+              <div className="tooltip-content">Like event</div>
             </div>
             <div className="tooltip-wrapper">
-              <span className="target-element">
+              <motion.span
+                initial="hidden"
+                animate="visible"
+                variants={fadeInUpwards}
+                className="target-element"
+              >
                 <Icon
                   as={AiFillSave}
+                  color={"green.500"}
                   w={"40px"}
-                  color={'green.500'}
                   h={"40px"}
                   cursor={"pointer"}
                 ></Icon>
-              </span>
-              <div className="tooltip-content">Save event</div>
+              </motion.span>
+              <div className="tooltip-content">Like event</div>
             </div>
           </Flex>
         </Flex>
