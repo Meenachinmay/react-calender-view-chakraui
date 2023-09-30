@@ -1,15 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Icon, Text, Tooltip } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { IDay } from "../types/day.type";
 
 import "../App.css";
-import GlobalContext from "../context/GlobalContext";
 import Model from "./ui-models/EventModel";
+
+import { AiFillSave } from "react-icons/ai";
+import { FcLike, FcViewDetails } from "react-icons/fc";
+
+import "../App.css";
 
 const Day: React.FC<IDay> = ({ day, events }: IDay) => {
   const [dayColor, setDayColor] = useState<string>("gray.100");
-  const { eventModel, setEventModel } = useContext(GlobalContext);
   const [isModelOpen, setIsModelOpen] = useState<boolean>(false);
 
   function getCurrentDayClass() {
@@ -86,42 +89,58 @@ const Day: React.FC<IDay> = ({ day, events }: IDay) => {
         <Flex flexDir={"column"} width={"full"} height={"full"}>
           <h1>Your Content Here</h1>
           <p>{day.format("DD")}</p>
-          <Flex width={"full"} maxWidth={"full"} gap={1} wrap={"wrap"}>
+          <Flex
+            width={"full"}
+            maxWidth={"full"}
+            height={"100%"}
+            gap={1}
+            wrap={"wrap"}
+          >
             {events?.map((e) => (
               <div className="events_dots" key={e.id}></div>
             ))}
           </Flex>
-          <Flex alignItems={"center"} gap={5} padding={"10px"}>
-            <Button
-              bg={"orange.400"}
-              width={"full"}
-              color={"white"}
-              fontWeight={"bold"}
-              _hover={{ bg: "orange.500", boxShadow: 'lg'}}
-              borderRadius={'0px'}
-            >
-              Button A
-            </Button>
-            <Button
-              bg={"orange.400"}
-              width={"full"}
-              color={"white"}
-              fontWeight={"bold"}
-              _hover={{ bg: "orange.500", boxShadow: 'lg'}}
-              borderRadius={'0px'}
-            >
-              Button B
-            </Button>
-            <Button
-              bg={"orange.400"}
-              width={"full"}
-              color={"white"}
-              fontWeight={"bold"}
-              _hover={{ bg: "orange.500", boxShadow: 'lg'}}
-              borderRadius={'0px'}
-            >
-              Button C
-            </Button>
+          <Flex
+            alignItems={"center"}
+            justifyContent={"space-around"}
+            gap={5}
+            padding={"5px"}
+            borderRadius={"10px"}
+            flexGrow={1}
+          >
+            <div className="tooltip-wrapper">
+              <span className="target-element">
+                <Icon
+                  as={FcLike}
+                  w={"40px"}
+                  h={"40px"}
+                  cursor={"pointer"}
+                ></Icon>
+              </span>
+              <div className="tooltip-content">Like event</div>
+            </div>
+            <div className="tooltip-wrapper">
+              <span className="target-element">
+                <Icon
+                  as={FcViewDetails}
+                  w={"40px"}
+                  h={"40px"}
+                  cursor={"pointer"}
+                ></Icon>
+              </span>
+              <div className="tooltip-content">View details</div>
+            </div>
+            <div className="tooltip-wrapper">
+              <span className="target-element">
+                <Icon
+                  as={AiFillSave}
+                  w={"40px"}
+                  h={"40px"}
+                  cursor={"pointer"}
+                ></Icon>
+              </span>
+              <div className="tooltip-content">Save event</div>
+            </div>
           </Flex>
         </Flex>
       </Model>

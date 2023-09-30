@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Box } from "@chakra-ui/react";
+import { Flex, Box, Portal } from "@chakra-ui/react";
 import "../../App.css"; // import our custom css for the blur effect
 
 interface ModelProps {
@@ -12,6 +12,7 @@ const Model: React.FC<ModelProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 
   return (
+    <Portal>
     <Flex
       position="fixed"
       top="0"
@@ -37,6 +38,7 @@ const Model: React.FC<ModelProps> = ({ isOpen, onClose, children }) => {
         {children}
       </Flex>
     </Flex>
+    </Portal>
   );
 };
 
