@@ -135,6 +135,7 @@ const Day: React.FC<IDay> = ({ day, events }: IDay) => {
                 <Icon
                   as={AiFillSave}
                   w={"40px"}
+                  color={'green.500'}
                   h={"40px"}
                   cursor={"pointer"}
                 ></Icon>

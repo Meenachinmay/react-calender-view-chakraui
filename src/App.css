@@ -1,16 +1,16 @@
 .events_dots {
   width: 10px;
   height: 10px;
-  background-color: #C05621;
+  background-color: #c05621;
   border-radius: 50%;
   margin-right: 5px;
   margin-bottom: 5px;
 }
 
 .model-overlay {
-    background-color: rgba(0, 0, 0, 0.4); /* Slightly dimmed black overlay */
-    backdrop-filter: blur(5px); /* Blur effect */
-    opacity: 1;
+  background-color: rgba(0, 0, 0, 0.4); /* Slightly dimmed black overlay */
+  backdrop-filter: blur(5px); /* Blur effect */
+  opacity: 1;
 }
 
 /* Base styles for the tooltip-wrapper */
