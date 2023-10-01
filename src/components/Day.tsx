@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Button, Flex, Icon, Text, Tooltip } from "@chakra-ui/react";
+import { Flex, Icon, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import React, { useEffect, useState } from "react";
 import { IDay } from "../types/day.type";
 
 import "../App.css";
@@ -9,24 +9,9 @@ import Model from "./ui-models/EventModel";
 import { AiFillSave } from "react-icons/ai";
 import { FcLike, FcViewDetails } from "react-icons/fc";
 
-import { motion } from "framer-motion";
-
-// define the animation variants
-const fadeInUpwards = {
-  hidden: {
-    y: 20,
-    opacity: 0,
-  },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 1, // This will make the animation take 1 second.
-    },
-  },
-};
 
 import "../App.css";
+import Tooltip from "./reusable-ui-components/Tooltip";
 
 const Day: React.FC<IDay> = ({ day, events }: IDay) => {
   const [dayColor, setDayColor] = useState<string>("gray.100");
@@ -125,55 +110,26 @@ const Day: React.FC<IDay> = ({ day, events }: IDay) => {
             borderRadius={"10px"}
             flexGrow={1}
           >
-            <div className="tooltip-wrapper">
-              <motion.span
-                initial="hidden"
-                animate="visible"
-                variants={fadeInUpwards}
-                className="target-element"
-              >
-                <Icon
-                  as={FcLike}
-                  w={"40px"}
-                  h={"40px"}
-                  cursor={"pointer"}
-                ></Icon>
-              </motion.span>
-              <div className="tooltip-content">Like event</div>
-            </div>
-            <div className="tooltip-wrapper">
-              <motion.span
-                initial="hidden"
-                animate="visible"
-                variants={fadeInUpwards}
-                className="target-element"
-              >
-                <Icon
-                  as={FcViewDetails}
-                  w={"40px"}
-                  h={"40px"}
-                  cursor={"pointer"}
-                ></Icon>
-              </motion.span>
-              <div className="tooltip-content">Like event</div>
-            </div>
-            <div className="tooltip-wrapper">
-              <motion.span
-                initial="hidden"
-                animate="visible"
-                variants={fadeInUpwards}
-                className="target-element"
-              >
-                <Icon
-                  as={AiFillSave}
-                  color={"green.500"}
-                  w={"40px"}
-                  h={"40px"}
-                  cursor={"pointer"}
-                ></Icon>
-              </motion.span>
-              <div className="tooltip-content">Like event</div>
-            </div>
+            <Tooltip>
+              <Icon as={FcLike} w={"40px"} h={"40px"} cursor={"pointer"}></Icon>
+            </Tooltip>
+            <Tooltip>
+              <Icon
+                as={FcViewDetails}
+                w={"40px"}
+                h={"40px"}
+                cursor={"pointer"}
+              ></Icon>
+            </Tooltip>
+            <Tooltip>
+              <Icon
+                as={AiFillSave}
+                color={"green.500"}
+                w={"40px"}
+                h={"40px"}
+                cursor={"pointer"}
+              ></Icon>
+            </Tooltip>
           </Flex>
         </Flex>
       </Model>
