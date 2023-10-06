@@ -9,7 +9,6 @@ import Model from "./ui-models/EventModel";
 import { AiFillSave } from "react-icons/ai";
 import { FcLike, FcViewDetails } from "react-icons/fc";
 
-
 import "../App.css";
 import Tooltip from "./reusable-ui-components/Tooltip";
 
@@ -99,7 +98,10 @@ const Day: React.FC<IDay> = ({ day, events }: IDay) => {
             wrap={"wrap"}
           >
             {events?.map((e) => (
-              <div className="events_dots" key={e.id}></div>
+              <Flex>
+                <div className="events_dots" key={e.id}></div>
+                <div>{e.title}</div>
+              </Flex>
             ))}
           </Flex>
           <Flex
@@ -110,10 +112,10 @@ const Day: React.FC<IDay> = ({ day, events }: IDay) => {
             borderRadius={"10px"}
             flexGrow={1}
           >
-            <Tooltip>
+            <Tooltip _string="Like event">
               <Icon as={FcLike} w={"40px"} h={"40px"} cursor={"pointer"}></Icon>
             </Tooltip>
-            <Tooltip>
+            <Tooltip _string="See details">
               <Icon
                 as={FcViewDetails}
                 w={"40px"}
@@ -121,7 +123,7 @@ const Day: React.FC<IDay> = ({ day, events }: IDay) => {
                 cursor={"pointer"}
               ></Icon>
             </Tooltip>
-            <Tooltip>
+            <Tooltip _string="Save event">
               <Icon
                 as={AiFillSave}
                 color={"green.500"}

@@ -6,7 +6,8 @@ import React from "react";
 import '../../App.css';
 
 interface ITooltipProps {
-  children: React.ReactNode;
+  children: React.ReactNode,
+  _string: string,
 }
 
 // define the animation variants
@@ -26,6 +27,7 @@ const fadeInUpwards = {
 
 const Tooltip: React.FC<ITooltipProps> = ({
   children,
+  _string
 }: ITooltipProps) => {
   return (
     <>
@@ -39,7 +41,7 @@ const Tooltip: React.FC<ITooltipProps> = ({
         >
           {children}
         </motion.span>
-        <div className="tooltip-content">Like event</div>
+        <div className="tooltip-content">{_string}</div>
       </div>
     </>
   );

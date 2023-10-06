@@ -55,4 +55,10 @@ export const events: IEvent[] = [
     description: "This is an event first",
     date: "25-09-2023",
   },
+  {
+    id: 10,
+    title: "Event first",
+    description: "This is an event first",
+    date: "06-10-2023",
+  },
 ];

@@ -1,5 +1,3 @@
-import dayjs from "dayjs";
-
 export interface IEvent {
   id: number;
   title: string;
