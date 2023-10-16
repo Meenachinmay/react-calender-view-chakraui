@@ -1,4 +1,4 @@
-import { Flex, Icon, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { IDay } from "../types/day.type";
@@ -6,11 +6,7 @@ import { IDay } from "../types/day.type";
 import "../App.css";
 import Model from "./ui-models/EventModel";
 
-import { AiFillSave } from "react-icons/ai";
-import { FcLike, FcViewDetails } from "react-icons/fc";
-
 import "../App.css";
-import Tooltip from "./reusable-ui-components/Tooltip";
 
 const Day: React.FC<IDay> = ({ day, events }: IDay) => {
   const [dayColor, setDayColor] = useState<string>("gray.100");
@@ -86,9 +82,21 @@ const Day: React.FC<IDay> = ({ day, events }: IDay) => {
           ))}
         </Flex>
       </Flex>
-      <Model isOpen={isModelOpen} onClose={() => setIsModelOpen(false)}>
-        <Flex flexDir={"column"} width={"full"} height={"full"}>
-          <h1>Your Content Here</h1>
+      <Model
+        isOpen={isModelOpen}
+        onClose={() => setIsModelOpen(false)}
+        meetingsForTheDay={events}
+      >
+        <Flex flexDir={"column"} width={"full"} height={"100%"}>
+          <h1
+            style={{
+              fontSize: "25px",
+              textAlign: "center",
+              fontWeight: "bolder",
+            }}
+          >
+            Meetings
+          </h1>
           <p>{day.format("DD")}</p>
           <Flex
             width={"full"}
@@ -98,40 +106,11 @@ const Day: React.FC<IDay> = ({ day, events }: IDay) => {
             wrap={"wrap"}
           >
             {events?.map((e) => (
-              <Flex>
+              <Flex key={e.id}>
                 <div className="events_dots" key={e.id}></div>
                 <div>{e.title}</div>
               </Flex>
             ))}
-          </Flex>
-          <Flex
-            alignItems={"center"}
-            justifyContent={"space-around"}
-            gap={5}
-            padding={"5px"}
-            borderRadius={"10px"}
-            flexGrow={1}
-          >
-            <Tooltip _string="Like event">
-              <Icon as={FcLike} w={"40px"} h={"40px"} cursor={"pointer"}></Icon>
-            </Tooltip>
-            <Tooltip _string="See details">
-              <Icon
-                as={FcViewDetails}
-                w={"40px"}
-                h={"40px"}
-                cursor={"pointer"}
-              ></Icon>
-            </Tooltip>
-            <Tooltip _string="Save event">
-              <Icon
-                as={AiFillSave}
-                color={"green.500"}
-                w={"40px"}
-                h={"40px"}
-                cursor={"pointer"}
-              ></Icon>
-            </Tooltip>
           </Flex>
         </Flex>
       </Model>
