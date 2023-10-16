@@ -1,5 +1,5 @@
 import { Flex, Portal, Select, Text, VStack } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../App.css"; // import our custom css for the blur effect
 import { IEvent } from "../../types/event.type";
 
@@ -43,9 +43,12 @@ const Model: React.FC<ModelProps> = ({
     (slot) => !bookedSlots.includes(slot)
   );
 
+
+  useEffect(() => {   
+     console.log('slot loaded', selectedSlot);
+  }, [selectedSlot])
+   
   if (!isOpen) return null;
-  
-  console.log(selectedSlot);
 
   return (
     <Portal>
