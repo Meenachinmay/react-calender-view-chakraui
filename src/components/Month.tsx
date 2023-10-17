@@ -21,12 +21,40 @@ const dayMapping = {
   Sat: "土",
 };
 
+const monthMapping = {
+  January: "１月",
+  February: "２月",
+  March: "３月",
+  April: "４月",
+  May: "５月",
+  June: "６月",
+  July: "７月",
+  August: "８月",
+  September: "９月",
+  October: "１０月",
+  November: "１１月",
+  December: "１２月",
+};
+
 const Month: React.FC<MonthProps> = ({ month, eventsByDate }) => {
   const { dayIndex, monthIndex } = useContext(GlobalContext);
 
-  const timeSlots = Array.from({ length: 24 }, (_, i) =>
-    i < 10 ? `0${i}:00` : `${i}:00`
-  );
+  // generating times slots from 9:30 to 7:30
+  const generateTimeSlots = () => {
+    const slots = [];
+    for (let hour = 9; hour <= 19; hour++) {
+      for (let min = 0; min < 60; min += 30) {
+        // Skip the 9:00 slot since you want to start from 9:30
+        if (hour === 9 && min === 0) continue;
+
+        const formattedHour = hour < 10 ? `0${hour}` : `${hour}`;
+        const formattedMin = min === 0 ? `00` : `${min}`;
+        slots.push(`${formattedHour}:${formattedMin}`);
+      }
+    }
+    return slots;
+  };
+  const timeSlots = generateTimeSlots();
 
   const getReferenceDay = useCallback(() => {
     return dayjs().month(monthIndex).date(dayIndex);
@@ -74,10 +102,7 @@ const Month: React.FC<MonthProps> = ({ month, eventsByDate }) => {
 
   return (
     <>
-      <Flex
-        width={"full"}
-        height={"100vh"}
-      >
+      <Flex width={"full"} height={"100vh"}>
         <Flex width={"full"} flexDir={"column"}>
           <Flex
             direction="row"
@@ -104,15 +129,8 @@ const Month: React.FC<MonthProps> = ({ month, eventsByDate }) => {
               Next Week
             </Button>
           </Flex>
-          {/* <Grid templateColumns="repeat(7, 1fr)" gap={1} width={"full"}>
-          {nextWeek.map((day, index) => (
-            <Day
-              day={day}
-              key={index}
-              events={eventsByDate[day.format("DD-MM-YYYY")]}
-            />
-          ))}
-        </Grid> */}
+
+          {/* Rendering time slots table here  */}
           <table className="table">
             <thead>
               <tr>
@@ -124,10 +142,12 @@ const Month: React.FC<MonthProps> = ({ month, eventsByDate }) => {
                       alignItems: "center",
                     }}
                   >
-                    <span>{referenceDay.format("MMMM")}</span>{" "}
-                    {/* This will give the full month name */}
-                    <span>{referenceDay.format("YYYY")}</span>{" "}
+                    <span>{referenceDay.format("YYYY")}年</span>{" "}
                     {/* This will give the full year */}
+                    <span style={{ fontSize: '11px', fontWeight: 'bolder'}}>
+                      {monthMapping[referenceDay.format("MMMM")]}
+                    </span>{" "}
+                    {/* This will give the full month name */}
                   </div>
                 </th>
                 {nextWeek.map((day, index) => (
@@ -165,7 +185,12 @@ const Month: React.FC<MonthProps> = ({ month, eventsByDate }) => {
             </tbody>
           </table>
         </Flex>
-        <Flex width={'full'} height={'100vh'} alignItems={'center'} justifyContent={'center'}>
+        <Flex
+          width={"full"}
+          height={"100vh"}
+          alignItems={"center"}
+          justifyContent={"center"}
+        >
           second side of page
         </Flex>
       </Flex>
