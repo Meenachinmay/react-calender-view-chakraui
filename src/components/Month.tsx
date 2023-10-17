@@ -1,32 +1,28 @@
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Grid,
-  GridItem,
-  Table,
-  TableCaption,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import Day from "./Day";
-import { IEvent } from "../types/event.type";
 import GlobalContext from "../context/GlobalContext";
+import { IEvent } from "../types/event.type";
+
+import "../components/month.css";
 
 interface MonthProps {
   month: dayjs.Dayjs[][];
   eventsByDate: { [date: string]: IEvent[] };
 }
 
+const dayMapping = {
+  Sun: "日",
+  Mon: "月",
+  Tue: "火",
+  Wed: "水",
+  Thu: "木",
+  Fri: "金",
+  Sat: "土",
+};
+
 const Month: React.FC<MonthProps> = ({ month, eventsByDate }) => {
-  const { dayIndex, monthIndex, setDayIndex, setMonthIndex } =
-    useContext(GlobalContext);
+  const { dayIndex, monthIndex } = useContext(GlobalContext);
 
   const timeSlots = Array.from({ length: 24 }, (_, i) =>
     i < 10 ? `0${i}:00` : `${i}:00`
@@ -34,9 +30,8 @@ const Month: React.FC<MonthProps> = ({ month, eventsByDate }) => {
 
   const getReferenceDay = useCallback(() => {
     return dayjs().month(monthIndex).date(dayIndex);
-  },[dayIndex, monthIndex]);
-  const [referenceDay, setReferenceDay] = useState(getReferenceDay()); 
-  console.log('reference day index ', referenceDay);
+  }, [dayIndex, monthIndex]);
+  const [referenceDay, setReferenceDay] = useState(getReferenceDay());
 
   // Get the next 7 days starting from the current date
   const getNextWeek = (startDay: dayjs.Dayjs) => {
@@ -47,6 +42,14 @@ const Month: React.FC<MonthProps> = ({ month, eventsByDate }) => {
   const [nextWeek, setNextWeek] = useState<dayjs.Dayjs[]>(
     getNextWeek(referenceDay)
   );
+
+  // check for booked dates
+  const isBooked = (day: dayjs.Dayjs, time: string) => {
+    const dayEvents = eventsByDate[day.format("DD-MM-YYYY")] || [];
+    return dayEvents.some(
+      (event) => time >= event.startTime && time <= event.endTime
+    );
+  };
 
   useEffect(() => {
     setReferenceDay(getReferenceDay());
@@ -71,12 +74,37 @@ const Month: React.FC<MonthProps> = ({ month, eventsByDate }) => {
 
   return (
     <>
-      <Flex width={"full"} flexDir={'column'}>
-        <Flex direction="row" justifyContent="space-between" marginBottom="10px">
-          <Button size={'sm'} onClick={handlePreviousWeek}>Previous Week</Button>
-          <Button size={'sm'} onClick={handleNextWeek}>Next Week</Button>
-        </Flex>
-        {/* <Grid templateColumns="repeat(7, 1fr)" gap={1} width={"full"}>
+      <Flex
+        width={"full"}
+        height={"100vh"}
+      >
+        <Flex width={"full"} flexDir={"column"}>
+          <Flex
+            direction="row"
+            justifyContent="space-between"
+            width={"full"}
+            padding={"10px"}
+          >
+            <Button
+              bg={"blue.800"}
+              fontWeight={"bold"}
+              color={"white"}
+              size={"xs"}
+              onClick={handlePreviousWeek}
+            >
+              Previous Week
+            </Button>
+            <Button
+              bg={"blue.800"}
+              fontWeight={"bold"}
+              color={"white"}
+              size={"xs"}
+              onClick={handleNextWeek}
+            >
+              Next Week
+            </Button>
+          </Flex>
+          {/* <Grid templateColumns="repeat(7, 1fr)" gap={1} width={"full"}>
           {nextWeek.map((day, index) => (
             <Day
               day={day}
@@ -85,38 +113,61 @@ const Month: React.FC<MonthProps> = ({ month, eventsByDate }) => {
             />
           ))}
         </Grid> */}
-        <Table variant={"simple"}>
-          <TableCaption>Testing table</TableCaption>
-          <Thead>
-            <Tr>
-              <Th></Th>
-              {nextWeek.map((day, index) => (
-                <Th>
-                  <Day
-                    day={day}
-                    key={index}
-                    events={eventsByDate[day.format("DD-MM-YYYY")]}
-                  />
-                </Th>
-              ))}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {timeSlots.map((time) => (
-              <Tr key={time}>
-                <Th>{time}</Th>
-                {nextWeek.map((day, index) => (
-                  <Td
-                    key={index}
-                    onClick={() => handleTimeSlotClick(day, time)}
+          <table className="table">
+            <thead>
+              <tr>
+                <th>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
                   >
-                    booking status
-                  </Td>
+                    <span>{referenceDay.format("MMMM")}</span>{" "}
+                    {/* This will give the full month name */}
+                    <span>{referenceDay.format("YYYY")}</span>{" "}
+                    {/* This will give the full year */}
+                  </div>
+                </th>
+                {nextWeek.map((day, index) => (
+                  <th key={index}>
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <span>{day.format("DD")}</span>
+                      <span>{dayMapping[day.format("ddd")]}</span>
+                    </div>
+                  </th>
                 ))}
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
+              </tr>
+            </thead>
+            <tbody>
+              {timeSlots.map((time) => (
+                <tr key={time}>
+                  <td>{time}</td>
+                  {nextWeek.map((day, index) => (
+                    <td
+                      key={index}
+                      onClick={() => handleTimeSlotClick(day, time)}
+                    >
+                      {isBooked(day, time) ? (
+                        <div className="slot">
+                          <span></span>
+                        </div>
+                      ) : (
+                        <div className="__vacant__booking__">
+                          <span></span>
+                        </div>
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Flex>
+        <Flex width={'full'} height={'100vh'} alignItems={'center'} justifyContent={'center'}>
+          second side of page
+        </Flex>
       </Flex>
     </>
   );
