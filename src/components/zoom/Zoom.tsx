@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 function Zoom() {
   const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>("");
   const [zoomMeetingURL, setZoomMeetingURL] = useState("");
   const [meetingTopic, setMeetingTopic] = useState("");
 
@@ -19,24 +19,42 @@ function Zoom() {
 
   async function createZoomMeeting() {
     const topic = "Test a meeting";
-    const date = new Date().toISOString().slice(0, 10); // Current date in YYYY-MM-DD format
-    const time = "09:00"; // 9AM
+    const date = '2023-10-20'; // Current date in YYYY-MM-DD format
+    const time = "10:00"; // 9AM
+    const endTime = "10:30"; // 9AM
 
-    const response = await fetch("http://localhost:3000/zoom/create-meeting", {
-      method: "POST",
-      body: JSON.stringify({ topic, date, time }),
-      credentials: 'include',
-      headers: {
-        "Content-Type": "application/json",
-        // Include any authentication headers if needed
-      },
-    });
+    try {
+      const response = await fetch(
+        "http://localhost:3000/zoom/create-meeting",
+        {
+          method: "POST",
+          body: JSON.stringify({ topic, date, time, endTime }),
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            // Include any authentication headers if needed
+          },
+        }
+      );
 
-    const data = await response.json();
-    // Update the state with the Zoom meeting URL and topic.
-    setZoomMeetingURL(data.zoomMeetingURL);
-    setMeetingTopic(data.topic);
+      if (!response.ok) {
+        // If HTTP-status is 400-599
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message || "Failed to create the Zoom meeting."
+        );
+      }
+
+      const data = await response.json();
+      // Update the state with the Zoom meeting URL and topic.
+      setZoomMeetingURL(data.zoomMeetingURL);
+      setMeetingTopic(data.topic);
+    } catch (error) {
+      // Handle errors and set them in the error state
+      console.log(error);
+    }
   }
+
 
 
   return (

@@ -6,8 +6,8 @@ export const events: IEvent[] = [
     user_id: "acb123",
     title: "Event first",
     description: "This is an event first",
-    date: "17-10-2023",
-    startTime: "10:00",
+    date: "19-10-2023",
+    startTime: "10:30",
     endTime: "11:00",
   },
   {
@@ -15,8 +15,8 @@ export const events: IEvent[] = [
     user_id: "acb_123",
     title: "Event first",
     description: "This is an event first",
-    date: "17-10-2023",
-    startTime: "12:00",
+    date: "19-10-2023",
+    startTime: "12:30",
     endTime: "13:00",
   },
   {
@@ -25,7 +25,7 @@ export const events: IEvent[] = [
     title: "Event first",
     description: "This is an event first",
     date: "19-10-2023",
-    startTime: "09:00",
+    startTime: "09:30",
     endTime: "10:00",
   },
 ];

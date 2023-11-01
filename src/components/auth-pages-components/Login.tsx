@@ -1,46 +1,29 @@
 // Login.tsx
 import { Flex } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useLogin } from "../../hooks/useLogin";
 
 function Login() {
   const [email, setEmail] = useState("chinmayanand896@icloud.com");
   const [password, setPassword] = useState("chinmay");
-  const [loading, setLoading] = useState(false);
+
+  const { login, loading, userData, error } = useLogin();
+
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
-    setLoading(true);
-
-    try {
-      const response = await fetch("http://localhost:3000/auth/login", {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.text();
-        console.log(data);
-
-        if (data === "loggedin") {
-          // Handle successful authentication
-          window.location.href = "/zoom"; // Replace with your desired navigation route
-        } else {
-          alert("Authentication failed. Please check your credentials.");
-        }
-      } else {
-        const errorData = await response.json();
-        // Displaying the server error message (if any)
-        alert(errorData.message || "Server error occurred.");
-      }
-    } catch (error) {
-      alert("An error occurred: " + error);
-    } finally {
-      setLoading(false);
-    }
+    login(email, password);
   };
+
+  useEffect(() => {
+    if (userData) {
+      navigate("/zoom");
+    }
+    if (error) {
+      alert(error);
+    }
+  }, [userData, error]);
 
   return (
     <>
@@ -80,7 +63,7 @@ function Login() {
           style={{
             padding: "10px",
             backgroundColor: "lightblue",
-            width: "100px",
+            width: "auto",
             borderRadius: "10px",
             fontWeight: "bold",
           }}

@@ -8,11 +8,13 @@ import ContextWrapper from "./context/ContextWraper.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./components/auth-pages-components/Login.tsx";
 import Zoom from "./components/zoom/Zoom.tsx";
+import Navbar from "./components/navbar/Navbar.tsx";
+import ProtectedRoute from "./ProtectedRoute.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <ProtectedRoute element={<App />} />,
   },
   {
     path: "/login",
@@ -20,7 +22,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/zoom",
-    element: <Zoom />,
+    element: <ProtectedRoute element={<Zoom />} />,
   },
 ]);
 
@@ -28,6 +30,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ChakraProvider>
       <ContextWrapper>
+        <Navbar />
         <RouterProvider router={router} />
       </ContextWrapper>
     </ChakraProvider>
